@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{%block titulo %}Sistema De Gestion De Inventarios{% endblock %}
+
+{% block contenido %}
+<h2>{% block subtitulo %}Gestion de productos{%endblock%}</h2>
+<div class="row">
+    <div class="col-md-5">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor%}
+        {% endif%}
+        {% endwith%} 
+        <div class="card card-body">
+            <form action="/add_producto" method="POST">
+                <div class="form-group">
+                    <input type="text" name="nombre" placeholder="Nombre producto" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="descripcion" placeholder="Descripcion producto" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="number" name="stock" placeholder="Stock producto" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="date" name="fecha" placeholder="Fecha Creacion" class="form-control">
+                </div>
+                <div class="form-group">
+                    <select name="categoria" class="form-control">
+                        <option selected=true disabled="disabled">Seleccione la categoria</option>
+                        {% for categoria in categorias %}
+                            <option value="{{ categoria.0 }}">{{ categoria.1 }}</option>
+                        {% endfor%}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="form-control btn btn-primary mt-4">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-7">
+       <table class="table table-striped table-bordered sm-white table-sm">
+            <thead>
+                <tr>
+                    <td>Producto</td>
+                    <td>Stock</td>
+                    <td>Fecha Ingreso</td>
+                    <td>Categoria</td>
+                    <td>Operaciones</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                <tr>
+                    <td>{{producto.1}}</td>
+                    <td>{{producto.3}}</td>
+                    <td>{{producto.4}}</td>
+                    <td>{{producto.6}}</td>
+                    <td>
+                        <a href="/edit_prod/{{ producto.0}}" class="btn btn-success btn-sm">Edit</a>
+                        <a href="/delete_prod/{{ producto.0}}" class="btn btn-danger btn-sm btn-delete">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+       </table> 
+    </div>
+
+</div>
+
+{% endblock%}
