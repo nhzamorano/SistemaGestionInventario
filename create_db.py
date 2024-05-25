@@ -84,6 +84,7 @@ class Create_db:
                 id_proveedor INTEGER NOT NULL,
                 id_producto INTEGER NOT NULL,
                 precio INTEGER NOT NULL,
+                cantidad INTEGER NOT NULL,
                 fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 foreign key(id_proveedor) references preveedores(id_proveedor),
                 foreign key(id_producto) references productos(id_producto)

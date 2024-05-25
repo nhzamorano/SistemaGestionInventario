@@ -25,13 +25,10 @@
                     <input type="text" name="descripcion" placeholder="Descripcion producto" class="form-control">
                 </div>
                 <div class="form-group">
-                    <input type="number" name="stock" placeholder="Stock producto" class="form-control">
-                </div>
-                <div class="form-group">
                     <input type="date" name="fecha" placeholder="Fecha Creacion" class="form-control">
                 </div>
                 <div class="form-group">
-                    <select name="categoria" class="form-control">
+                    <select name="categoria" class="form-control" required>
                         <option selected=true disabled="disabled">Seleccione la categoria</option>
                         {% for categoria in categorias %}
                             <option value="{{ categoria.0 }}">{{ categoria.1 }}</option>
@@ -49,7 +46,6 @@
             <thead>
                 <tr>
                     <td>Producto</td>
-                    <td>Stock</td>
                     <td>Fecha Ingreso</td>
                     <td>Categoria</td>
                     <td>Operaciones</td>
@@ -59,7 +55,6 @@
                 {% for producto in productos %}
                 <tr>
                     <td>{{producto.1}}</td>
-                    <td>{{producto.3}}</td>
                     <td>{{producto.4}}</td>
                     <td>{{producto.6}}</td>
                     <td>

@@ -3,6 +3,7 @@ from categorias import Categoria
 from productos import Productos
 from proveedores import Proveedores
 from bodegas import Bodegas
+from stock import Stock
 import sqlite3
 
 
@@ -14,11 +15,21 @@ def get_db():
         db = g._database = sqlite3.connect(DATABASE)
     return db
 
+def calcular_nevo_stock(tipo,stock,cantidad):
+    print(f"desde fun{tipo}")
+    if tipo == 'sumar':
+        new_stock=stock+cantidad
+    else:
+        new_stock=stock-cantidad
+        if new_stock < 0:
+            new_stock=0
+    return new_stock
+
 categoria=Categoria()
 producto = Productos()
 proveedor = Proveedores()
 bodega = Bodegas()
-
+stk = Stock()
 
 #Creamos la aplicacion
 app = Flask(__name__)
@@ -95,12 +106,13 @@ def productos():
     lista=categoria.listar_categorias()
     return render_template('productos.html',productos=data,categorias=lista)
 
+
 @app.route('/add_producto', methods=['POST'])
 def add_producto():
     if request.method == 'POST':
         nombre = request.form['nombre']
         descripcion = request.form['descripcion']
-        stock = request.form['stock']
+        stock = 0
         fecha = request.form['fecha']
         categoria = request.form['categoria']
         #cur = get_db().cursor()
@@ -135,7 +147,7 @@ def update_producto(id):
     if request.method == 'POST':
         nombre = request.form['nombre']
         descripcion = request.form['descripcion']
-        stock = request.form['stock']
+        stock = 0
         fecha = request.form['fecha']
         categoria = request.form['categoria']
         #id_cat=request.form['id_cat']
@@ -153,6 +165,23 @@ def delete_prod(id):
     get_db().commit()
     flash('Producto eliminado exitosamente')
     return redirect(url_for('productos'))
+
+#Consultas y Reportes
+@app.route('/consultar_productos')
+def consultar_productos():
+    data = producto.listar_productos()
+    
+    #print(data)
+    return render_template('consulta_productos.html',productos = data)
+
+@app.route('/consulta_producto_item/<id>')
+def consulta_producto_item(id):
+    #print(id)
+    data = producto.consultar_producto(id)
+    print(data)
+    return render_template('consulta_productos.html',detalles=data)
+
+
 
 
 #Proveedores
@@ -238,7 +267,51 @@ def delete_bodega(id):
 #Stock de productos
 @app.route('/stock')
 def stock():
-    return render_template('stock.html')
+    data=stk.listar_stock()
+    print(data)
+    productos = producto.listar_productos_nombre()
+    proveedores = proveedor.listar_proveedores()
+    return render_template('stock.html',productos=productos,proveedores=proveedores,datos=data)
+
+@app.route('/add_stock', methods=['POST'])
+def add_stock():
+    if request.method == 'POST':
+        proveedor = request.form['proveedor']
+        producto = request.form['producto']
+        precio = request.form['precio']
+        cantidad = request.form['cantidad']
+        fecha = request.form['fecha']
+        stk.agregar_stock(proveedor,producto,precio,cantidad,fecha)
+        flash("Stock adicionado exitosamente")
+        return redirect(url_for('stock'))
+
+@app.route('/edit_stok/<id>')
+def edit_stock(id):
+    data = stk.buscar_stock(id)
+    print(data)
+    return render_template('manejo_stock.html',dato=data[0])
+
+@app.route('/update_stock/<id>', methods=['POST'])
+def update_stock(id):
+    if request.method == 'POST':
+        stock = int(request.form['stock_actual'])
+        cantidad = int(request.form['cantidad'])
+        tipo = request.form['tipo_operacion']
+        new_stock = calcular_nevo_stock(tipo,stock,cantidad)
+        stk.actualizar_stock(id,new_stock)
+        flash("Stock actualizado exitosamente")
+        return redirect(url_for('stock'))
+
+@app.route('/total_stock')
+def total_stock():
+    total = stk.total_stock()
+    print(total)
+    return render_template('valor_stock.html',total=total[0])
+
+
+
+
+
 
 
 @app.teardown_appcontext

@@ -31,6 +31,18 @@
               <li class="nav-item">
                 <a class="nav-link " href="/stock" >Stock Productos</a>
               </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Reportes
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="/consultar_productos">Consultar Producto</a></li>
+                  <li><a class="dropdown-item" href="#">Consultar Categoria</a></li>
+                  <li><a class="dropdown-item" href="#">Consultar Proveedor</a></li>
+                  <li><a class="dropdown-item" href="#">Consultar Bodega</a></li>
+                  <li><a class="dropdown-item" href="#">Generar informe de stock</a></li>
+                </ul>
+              </li>
             </ul>
           </div>
         </div>
@@ -44,7 +56,12 @@
         {% endblock %}
     </div>
     
+<!--
+    <script src="{{ url_for('static', filename='js/jquery.min.js')}}" ></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js')}}"></script>
+-->
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js')}}" ></script>
     <script src="{{ url_for('static', filename='js/main.js')}}"></script>
+  
 </body>
 </html>

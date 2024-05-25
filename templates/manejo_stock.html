@@ -1,0 +1,46 @@
+{% extends 'base.html'%}
+{% block contenido %}
+
+<div class="row">
+  <div class="col-md-5">
+    <div class="card body">
+      <h3 class="mb-3">Manejo del Stock</h3>
+      <form action="/update_stock/{{dato.0}}", method="POST">
+        <div class="form-group">
+          <input type="text" name="proveedor" class="form-control" value="{{dato.4}}" disabled>
+        </div>
+        <div class="form-group">
+          <input type="text" name="producto" class="form-control" value="{{dato.2}}" disabled>
+        </div>
+        <div class="form-group">
+          <input type="number" name="precio"  class="form-control" value="{{dato.5}}" disabled>
+        </div>
+        <div class="form-group">
+          <input type="number" name="stock"  class="form-control" value="{{dato.6}}" disabled>
+          <input type="hidden" name="stock_actual" value="{{dato.6}}">
+        </div>
+        <div class="form-group">
+          <input type="number" name="cantidad" placeholder="Cantidad"  class="form-control" required>
+        </div>
+        
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="tipo_operacion" id="flexRadioDefault1" value="sumar" checked>
+          <label class="form-check-label" for="flexRadioDefault1">
+            Adicionar
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="tipo_operacion" id="flexRadioDefault2" value="restar" >
+          <label class="form-check-label" for="flexRadioDefault2">
+            Retirar
+          </label>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="form-control btn btn-primary mt-4">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{%endblock%}
