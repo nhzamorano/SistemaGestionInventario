@@ -91,6 +91,17 @@ def delete_categoria(id):
     flash('Categoria removida exitosamente')
     return redirect(url_for('categorias'))
 
+@app.route('/listar_cateorias')
+def listar_categorias():
+    lista=categoria.listar_categorias()
+    return render_template('consulta_categorias.html',categorias=lista)
+
+@app.route('/consultar_categoria_item/<id>')
+def consulta_categoria_item(id):
+    data=categoria.consultar_categoria(id)
+    print(data)
+    return render_template('consulta_categorias.html',detalles=data)
+
 
 #Modulo Productos
 @app.route('/productos')
@@ -181,6 +192,23 @@ def consulta_producto_item(id):
     print(data)
     return render_template('consulta_productos.html',detalles=data)
 
+@app.route('/test')
+def test():
+    data = producto.listar_productos_nombre()
+    #print(data)
+    return render_template('test.html',productos=data)
+
+@app.route('/buscar_prod/<id>',methods=['POST'])
+def buscar_prod(id):
+    if request.method == 'POST':
+        #print(id)
+        data = producto.consultar_producto(id)
+        print(id)
+        return render_template('test1.html',detalles=data)
+
+
+
+
 
 
 
@@ -225,6 +253,17 @@ def delete_proveedor(id):
     flash("Proveedor eliminado con exito")
     return redirect(url_for('proveedores'))
 
+@app.route('/listar_proveedores')
+def listar_proveedores():
+    data = proveedor.listar_proveedores()
+    return render_template('consulta_proveedores.html',proveedores=data)
+
+@app.route('/consultar_proveedor_item/<id>')
+def consultar_proveedor_item(id):
+    data=proveedor.consultar_proveedor(id)
+    print(data)
+    return render_template('consulta_proveedores.html',detalles=data)
+
 #Bodegas
 @app.route('/bodegas')
 def bodegas():
@@ -263,6 +302,11 @@ def delete_bodega(id):
     bodega.eliminar_bodega(id)
     flash('Bodega eliminada exitosamente')
     return redirect(url_for('bodegas'))
+
+@app.route('/gestion_bodega')
+def gestion_bodega():
+    pass
+
 
 #Stock de productos
 @app.route('/stock')
@@ -307,6 +351,18 @@ def total_stock():
     total = stk.total_stock()
     print(total)
     return render_template('valor_stock.html',total=total[0])
+
+@app.route('/totales_stock')
+def totales_stock():
+    total=stk.total_stock()
+    total_cat = stk.total_stock_categoria()
+    total_prov = stk.total_stock_proveedor()
+    print(total_prov)
+    return render_template('totales_stock.html',total=total[0],total_cat=total_cat,total_prov=total_prov)
+
+
+
+
 
 
 

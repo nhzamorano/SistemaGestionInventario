@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block contenido %}
+    <h2>Valor Total Stock</h2>
+    <p>Stock total de productos: {{total.0}}</p>
+    <p class="text-center text-info">Total por Categoria</p>
+    <ul class="list-group mb-4">
+        {% for cat in total_cat %}
+            <li class="list-group-item">Categoria: {{cat.4 }} - Stock Total: {{ cat.1 }}</li>
+        {% endfor %}
+    </ul>
+    <p class="text-center text-info">Total por Proveedor</p>
+    <ul class="list-group">
+        {% for prov in total_prov %}
+            <li class="list-group-item">Proveedor: {{prov.3 }} - Stock Total: {{ prov.1 }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/" class="btn btn-primary btn-lg ">Home</a>
+{% endblock %}

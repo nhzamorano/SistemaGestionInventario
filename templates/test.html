@@ -1,0 +1,8 @@
+<form action="{{url_for('consulta_producto_item',id=id)}}" method="GET">
+    <select name="id" >
+        {% for producto in productos %}
+        <option value="{{ producto.0 }}">{{producto.1}}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Enviar</button>
+</form>

@@ -7,8 +7,8 @@ class Proveedores:
 
     def listar_proveedores(self):
         self.cursor.execute("SELECT * FROM proveedores")
-        self.productos = self.cursor.fetchall()
-        return self.productos
+        self.proveedores = self.cursor.fetchall()
+        return self.proveedores
     
     def agregar_proveedor(self,nombre,direccion,telefono,fecha):
         self.cursor.execute("INSERT INTO proveedores(nombre,direccion,telefono,fecha_creacion) VALUES(?,?,?,?)",(nombre,direccion,telefono,fecha))
@@ -32,3 +32,17 @@ class Proveedores:
     def eliminar_proveedor(self,id):
         self.cursor.execute("DELETE FROM proveedores WHERE id_proveedor = {0}".format(id))
         self.conexion.commit()
+    
+
+    def consultar_proveedor(self,id):
+        self.cursor.execute("""
+            SELECT pr.id_proveedor,pr.nombre,pr.direccion,pr.telefono,
+            pp.id_proveedor, pp.id_producto, p.nombre 
+            FROM proveedores pr, proveedor_producto pp  
+            INNER JOIN productos p 
+            ON pr.id_proveedor = pp.id_proveedor
+            AND pp.id_producto = p.id_producto
+            WHERE pr.id_proveedor = ?
+            """,(id,))
+        self.data = self.cursor.fetchall()
+        return self.data  

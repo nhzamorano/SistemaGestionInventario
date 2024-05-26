@@ -30,5 +30,42 @@ class Stock:
         self.cursor.execute("SELECT SUM(cantidad) AS cant,SUM(precio*cantidad) AS total FROM proveedor_producto")
         self.data= self.cursor.fetchall()
         return self.data
+    
+    """
+    SELECT  c.id_categoria,
+    SUM(s.cantidad)
+    FROM t_stock s
+    INNER JOIN t_categoria_producto c
+        ON c.id_producto = s.id_producto
+    WHERE c.id_categoria = <categoria a buscar>
+    GROUP BY c.id_categoria
+    """
+    def total_stock_categoria(self):
+        self.cursor.execute("""
+            SELECT pp.id_producto,
+            SUM(pp.cantidad) as cant,
+            p.id_producto,c.id_categoria,c.nombre 
+            FROM proveedor_producto pp, productos p 
+            INNER JOIN categorias c
+            ON pp.id_producto = p.id_producto
+            AND c.id_categoria = p.id_categoria
+            GROUP BY c.id_categoria
+            """)
+        self.data = self.cursor.fetchall()
+        return self.data
+
+    def total_stock_proveedor(self):
+        self.cursor.execute("""
+            SELECT pp.id_proveedor,
+            SUM(pp.cantidad) as cant,
+            pr.id_proveedor,pr.nombre 
+            FROM proveedor_producto pp 
+            INNER JOIN proveedores pr
+            ON pp.id_proveedor = pr.id_proveedor
+            GROUP BY pr.id_proveedor
+            """)
+        self.data = self.cursor.fetchall()
+        return self.data
+
 
 

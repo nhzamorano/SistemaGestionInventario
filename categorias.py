@@ -31,4 +31,16 @@ class Categoria:
     def eliminar_categoria(self,id):
         self.cursor.execute("DELETE FROM categorias WHERE id_categoria = {0}".format(id))
         self.conexion.commit()
+    
+    def consultar_categoria(self,id):
+        self.cursor.execute("""
+            SELECT c.id_categoria,c.nombre,c.descripcion,
+            p.id_producto, p.nombre 
+            FROM categorias c   
+            INNER JOIN productos p 
+            ON c.id_categoria = p.id_categoria
+            WHERE c.id_categoria = ?
+            """,(id,))
+        self.data = self.cursor.fetchall()
+        return self.data  
 
