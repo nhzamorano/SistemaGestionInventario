@@ -9,6 +9,15 @@ class Bodegas:
         self.bodegas = self.cursor.fetchall()
         return self.bodegas
     
+    def listar_bodegas_nombre(self):
+        self.cursor.execute("SELECT id_bodega,nombre FROM bodegas") 
+        self.bodegas = self.cursor.fetchall()
+        return self.bodegas
+
+    def buscar_bodega_capacidad(self,bodega):
+        self.cursor.execute("SELECT id_bodega,capacidad FROM bodegas WHERE id_bodega = {0}".format(bodega))
+        return self.cursor.fetchall()
+
     def agregar_bodegas(self,nombre,ubicacion,capacidad,fecha):
         self.cursor.execute("INSERT INTO bodegas (nombre,ubicacion,capacidad,fecha) VALUES(?,?,?,?)",(nombre,ubicacion,capacidad,fecha))
         self.conexion.commit()

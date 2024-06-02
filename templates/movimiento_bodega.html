@@ -4,7 +4,7 @@
 
 {% block contenido %}
 
-<h2>{% block subtitulo %}Gestion del Stock de Productos {%endblock%}</h2>
+<h2>{% block subtitulo %}Movimiento de  Productos en Bodega {%endblock%}</h2>
 
 <div class="row">
   <div class="col-md-3">
@@ -19,12 +19,12 @@
         {% endif%}
         {% endwith%} 
     <div class="card card-body">
-      <form action="/add_stock"" method="POST">
+      <form action="/adicionar_mvto_bodega_producto" method="POST">
         <div class="form-group">
-          <select name="proveedor" class="form-control" required>
-            <option selected=true disabled="disabled">Seleccione el proveedor</option>
-            {% for proveedor in proveedores %}
-                <option value="{{ proveedor.0 }}">{{ proveedor.1 }}</option>
+          <select name="bodega" class="form-control" required>
+            <option selected=true disabled="disabled">Seleccione la bodega</option>
+            {% for bodega in bodegas %}
+                <option value="{{ bodega.0 }}">{{ bodega.1 }}</option>
             {% endfor%}
           </select>
         </div>
@@ -37,17 +37,6 @@
           </select>
         </div>
         <div class="form-group">
-          <select name="bodega" class="form-control" required>
-            <option selected=true disabled="disabled">Seleccione bodega destino</option>
-            {% for bodega in bodegas %}
-              <option value="{{ bodega.0 }}">{{ bodega.1 }}</option>
-            {% endfor%}
-          </select>
-        </div>
-        <div class="form-group">
-          <input type="number" name="precio" placeholder="Precio producto" class="form-control">
-        </div>
-        <div class="form-group">
           <input type="number" name="cantidad" placeholder="Catidad producto" class="form-control">
         </div>
         <div class="form-group">
@@ -56,6 +45,7 @@
         <div class="form-group">
           <button type="submit" class="form-control btn btn-primary mt-4">Save</button>
         </div>
+        
       </form>
     </div>
   </div>
@@ -63,38 +53,29 @@
     <table class="table table-striped table-bordered sm-white table-sm">
       <thead>
         <tr>
-          <td>Proveedor</td>
+          <td>Bodega</td>
           <td>Producto</td>
-          <td>Precio</td>
           <td>Stock</td>
-          <td>Fecha</td>
-          <td>Add/Remove stock</td>
-          <td>Eliminar</td>
+          <td>Fecha Ingreso</td>
+          <td>Opciones</td>
         </tr>
       </thead>
       <tbody>
-        {% for dato in datos %}
+        {% for mvto in movimientos %}
         <tr>
-          <td>{{ dato.4 }}</td>
-          <td>{{ dato.2 }}</td>
-          <td>{{ dato.5 }}</td>
-          <td>{{ dato.6 }}</td>
-          <td>{{ dato.7 }}</td>
+          <td>{{mvto.5}}</td>
+          <td>{{mvto.6}}</td>
+          <td>{{mvto.2}}</td>
+          <td>{{mvto.3}}</td>
+          
           <td>
-            <a href="/edit_stok/{{ dato.0}}" class="btn btn-success btn-sm">Add</a>
-            <a href="/edit_stok/{{ dato.0}}" class="btn btn-danger btn-sm">Remove</a>
+            <a href="/consultar_disponibilidad_producto/{{mvto.1}}" class="btn btn-success btn-sm">Consultar</a>
+            <a href="/edit_producto_bodega/{{mvto.1}}/{{mvto.0}}" class="btn btn-danger btn-sm btn-delete">Eliminar</a>
           </td>
-          <td><a href="/eliminar_mvto_producto/{{dato.1}}" class="btn btn-warning btn-sm btn-delete">Eliminar</a></td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
 </div>
-<div class="row">
-  <div class="col-md-12 mt-4 text-left">
-    <a href="/total_stock" class="btn btn-info btn-sm ">Valor Total Stock</a>
-  </div>
-</div>
-
 {% endblock %}

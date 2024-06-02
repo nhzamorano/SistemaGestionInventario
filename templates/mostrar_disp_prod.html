@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{%block titulo %}Sistema De Gestion De Inventarios{% endblock %}
+
+{% block contenido %}
+
+<h2>{% block subtitulo %}Disponibilidad de productos en Bodega {%endblock%}</h2>
+<table class="table table-striped table-bordered sm-white table-sm">
+    <thead>
+        <tr>
+            <td>Bodega</td>
+            <td>Producto</td>
+            <td>Cantidad</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dato in datos %}
+        <tr>
+            <td>{{dato.3}}</td>
+            <td>{{dato.4}}</td>
+            <td>{{dato.2}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="/gestion_bodega_producto" class="btn btn-success btn-sm">Regresar</a>
+{% endblock %}

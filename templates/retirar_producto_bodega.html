@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{%block titulo %}Sistema De Gestion De Inventarios{% endblock %}
+
+{% block contenido %}
+
+<h2>{% block subtitulo %}Retirar Producto de Bodega {%endblock%}</h2>
+
+<div class="row">
+  <div class="col-md-4">
+    
+  </div>
+  <div class="col-md-4">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor%}
+        {% endif%}
+        {% endwith%} 
+    <div class="card card-body">
+      <form action="/update_producto_bodega" method="POST">
+        <label for="bodega">Bodega</label>
+        <div class="form-group">
+          <input type="text" name="bodega" class="form-control" value="{{dato.3}}" disabled>
+          <input type="hidden" name="id_bodega" value="{{dato.0}}">
+        </div>
+        <label for="producto">Producto</label>
+        <div class="form-group">
+          <input type="text" name="producto" class="form-control" value="{{dato.4}}" disabled>
+          <input type="hidden" name="id_producto" value="{{dato.1}}">
+        </div>
+        <label for="cantidad">Stock Actual</label>
+        <div class="form-group">
+          <input type="number" name="cantidad"  class="form-control" value="{{dato.2}}" disabled>
+          <input type="hidden" name="stock" value="{{dato.2}}">
+        </div>
+        <div class="form-group">
+          <input type="text" name="cant_retirar" placeholder="Cantidad a retirar" class="form-control">
+        </div>
+        <div class="form-group">
+          <button type="submit" class="form-control btn btn-primary mt-4">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-4">
+    
+  </div>
+</div>
+{% endblock %}

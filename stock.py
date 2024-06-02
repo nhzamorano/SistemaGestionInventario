@@ -6,10 +6,15 @@ class Stock:
     
     def listar_stock(self):  
         self.cursor.execute("""
-            SELECT pp.id,p.id_producto,p.nombre,pr.id_proveedor,pr.nombre,pp.precio,pp.cantidad,pp.fecha FROM productos p, proveedores pr  INNER JOIN proveedor_producto pp ON pp.id_proveedor = pr.id_proveedor AND pp.id_producto = p.id_producto
+            SELECT pp.id,p.id_producto,p.nombre,pr.id_proveedor,pr.nombre,pp.precio,pp.cantidad,pp.fecha 
+            FROM productos p, proveedores pr  INNER JOIN proveedor_producto pp ON pp.id_proveedor = pr.id_proveedor AND pp.id_producto = p.id_producto
         """)
         self.stok = self.cursor.fetchall()
         return self.stok
+
+    def listar_producto_stock_nombre(self):
+        self.cursor.execute("SELECT DISTINCT pp.id_producto,p.nombre FROM proveedor_producto pp INNER JOIN productos p ON pp.id_producto = p.id_producto")
+        return self.cursor.fetchall()
 
     def actualizar_stock(self,idpp,stock):
         self.cursor.execute("UPDATE proveedor_producto SET cantidad = ? WHERE id=?",(stock,idpp))
@@ -25,21 +30,16 @@ class Stock:
         """,(id,))
         self.data = self.cursor.fetchall()
         return self.data
-    
+
+    def eliminar_producto_stock(self,id):
+        self.cursor.execute("DELETE  FROM proveedor_producto WHERE id_producto = {0}".format(id))
+        self.conexion.commit()
+
     def total_stock(self):
         self.cursor.execute("SELECT SUM(cantidad) AS cant,SUM(precio*cantidad) AS total FROM proveedor_producto")
         self.data= self.cursor.fetchall()
         return self.data
-    
-    """
-    SELECT  c.id_categoria,
-    SUM(s.cantidad)
-    FROM t_stock s
-    INNER JOIN t_categoria_producto c
-        ON c.id_producto = s.id_producto
-    WHERE c.id_categoria = <categoria a buscar>
-    GROUP BY c.id_categoria
-    """
+
     def total_stock_categoria(self):
         self.cursor.execute("""
             SELECT pp.id_producto,
